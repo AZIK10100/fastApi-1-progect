@@ -4,28 +4,39 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
+mevalar =['olma','anor', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore, qui aliquid? Aspernatur sit atque perferendis. Pariatur, quos dolorum a deserunt ipsum totam recusandae. Dolore ab labore placeat. Nihil, illo rem.']
+
+
 
 @app.get("/")
 def index():
-    return {"message": "hi"}
+    return {"mevalar_list": mevalar}
 
-@app.get("/about")
-def index():
-    return {"message": "page aboute me"}
-
-@app.get("/student/{name}/familia/{surname}")
-def index(name: str, surname):
-    return {"message": name + " " + surname}
-
-
-@app.get("/ikkinchi")
-def ikkinchi (s, a=None):
-    if a:
-        return {"s": s, "a": a }
-    return {"s": s}
+@app.post("/")
+def meva_yaratish(meva_nomi):
+    global mevalar
+    mevalar.append (meva_nomi)
+    return {"message":  "mave yaratiladi."}
         
        
-   
+@app.put('/{mevalar}/{yangi_nom})')
+def ozgartirish(meva_nomi: str, yangi_nom: str):
+    global mevalar
+    try:
+        meva_id = mevalar.index(meva_nomi)
+        mevalar[meva_id] = yangi_nom
+    except:
+        return {"error": "bunday meva nomi yoq"}
+    return {"xabar": "meva nomi ozgardi"}
 
+
+@app.put('/{mevalar}')
+def ozgartirish(meva_nomi: str):
+    global mevalar
+    try:
+       mevalar.remove(meva_nomi)
+    except:
+        return {"error": "bunday meva nomi yoq"}
+    return {"xabar": "meva nomi ozgardi"}
 
 
